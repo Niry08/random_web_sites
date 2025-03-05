@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Web Sites - Main</title>
+</head>
+<body>
+    <h1>Random Web Sites</h1>
+    <script>
+        const sites = [
+            'https://www.google.com',
+            'https://www.bing.com',
+            'https://www.yahoo.com',
+            'https://www.duckduckgo.com'
+        ];
+
+        function getRandomSite() {
+            const randomIndex = Math.floor(Math.random() * sites.length);
+            window.location.href = sites[randomIndex];
+        }
+    </script>
+    <button onclick="getRandomSite()">Go to Random Site</button>
+</body>
+</html>
