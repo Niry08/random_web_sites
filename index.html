@@ -4,22 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Random Web Sites - Main</title>
+    <script src="list_web_sites.js"></script>
 </head>
 <body>
-    <h1>Random Web Sites</h1>
-    <script>
-        const sites = [
-            'https://www.google.com',
-            'https://www.bing.com',
-            'https://www.yahoo.com',
-            'https://www.duckduckgo.com'
-        ];
-
-        function getRandomSite() {
-            const randomIndex = Math.floor(Math.random() * sites.length);
-            window.location.href = sites[randomIndex];
-        }
-    </script>
-    <button onclick="getRandomSite()">Go to Random Site</button>
+    <header style="background-color: cadetblue; padding: 10px; margin: 0%; text-align: center;">
+        <h1 style="color: white; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">Random Web Sites</h1>
+    </header>
+    
+    <button onclick="getRandomSite()" style="display: flexbox; background-color: lightblue; width: 30%; height: 20%; font-size: large; border: none; border-radius: 10%;">Go to Random Site</button>
 </body>
 </html>
