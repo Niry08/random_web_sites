@@ -15,38 +15,50 @@
             margin: 0;
             background-color: #f4f4f4;
         }
-        h1 {
-            margin-bottom: 20px;
+        header {
+            background-color: #0056b3;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            width: 100%;
+            font-size: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
         .board {
             display: grid;
             grid-template-columns: repeat(7, 70px);
-            grid-gap: 10px;
-            background-color: #007BFF;
-            padding: 10px;
+            grid-gap: 8px;
+            background-color: #A3CEF1;
+            padding: 15px;
             border-radius: 10px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
         }
         .cell {
             width: 70px;
             height: 70px;
             background-color: white;
             border-radius: 50%;
-            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
         }
-        .cell.red {
-            background-color: red;
+        .cell:hover {
+            transform: scale(1.1);
         }
-        .cell.yellow {
-            background-color: yellow;
-        }
+        .cell.red { background-color: red; }
+        .cell.yellow { background-color: yellow; }
     </style>
 </head>
 <body>
-    <h1>Puissance 4</h1>
+    <header style="background-color: cadetblue; padding: 10px; width: 100%; text-align: center; position: fixed; top: 0; left: 0">
+        <h1 style="color: white; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
+            Puissance 4
+        </h1>
+    </header>
+
     <div id="board" class="board"></div>
     <script>
         const rows = 6;
@@ -73,7 +85,14 @@
             if (currentPlayer !== 'red') return;
             if (dropDisc(col)) {
                 if (checkWin()) {
-                    setTimeout(() => alert(`${currentPlayer} gagne !`), 100);
+                    if (currentPlayer == 'red'){
+                        var colorPlayer = 'rouge'
+                    } else {
+                        var colorPlayer = 'jaune'
+                    }
+
+                    setTimeout(() => alert(`Le joueur ${colorPlayer} à gagné !`), 100);
+                    location.reload();
                     return;
                 }
                 currentPlayer = 'yellow';
@@ -82,23 +101,51 @@
         }
 
         function aiMove() {
-            let col;
-            do {
-                col = Math.floor(Math.random() * cols);
-            } while (!dropDisc(col));
-            if (checkWin()) {
-                setTimeout(() => alert(`${currentPlayer} gagne !`), 100);
-                return;
+            let col = findBestMove('yellow') || findBestMove('red') || findRandomMove();
+            if (dropDisc(col)) {
+                if (checkWin()) {
+                    if (currentPlayer == 'red'){
+                        var colorPlayer = 'rouge'
+                    } else {
+                        var colorPlayer = 'jaune'
+                    }
+                    setTimeout(() => alert(`Le joueur ${colorPlayer} à gagné !`), 100);
+                    location.reload();
+                    return;
+                }
+                currentPlayer = 'red';
             }
-            currentPlayer = 'red';
+        }
+
+        function findBestMove(player) {
+            for (let c = 0; c < cols; c++) {
+                if (canWin(c, player)) return c;
+            }
+            return null;
+        }
+
+        function findRandomMove() {
+            let validCols = [...Array(cols).keys()].filter(c => grid[0][c] === null);
+            return validCols[Math.floor(Math.random() * validCols.length)];
+        }
+
+        function canWin(col, player) {
+            for (let row = rows - 1; row >= 0; row--) {
+                if (!grid[row][col]) {
+                    grid[row][col] = player;
+                    let win = checkWin();
+                    grid[row][col] = null;
+                    return win;
+                }
+            }
+            return false;
         }
 
         function dropDisc(col) {
             for (let row = rows - 1; row >= 0; row--) {
                 if (!grid[row][col]) {
                     grid[row][col] = currentPlayer;
-                    const cell = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
-                    cell.classList.add(currentPlayer);
+                    document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`).classList.add(currentPlayer);
                     return true;
                 }
             }
@@ -112,7 +159,6 @@
                 { r: 1, c: 1 },
                 { r: 1, c: -1 }
             ];
-            
             for (let row = 0; row < rows; row++) {
                 for (let col = 0; col < cols; col++) {
                     if (!grid[row][col]) continue;
