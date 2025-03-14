@@ -7,5 +7,8 @@ function scrollCall() {
 function scrollCount() {
     scrollCountNum++;
     document.getElementById("score").innerHTML = scrollCountNum;
+
+    document.getElementById("scoreText").style.fontSize = scrollCountNum / 10 + "px";
+
     scrollCall();
 }

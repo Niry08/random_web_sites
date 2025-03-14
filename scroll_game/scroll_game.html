@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scroll Game</title>
     <script src="scroll_game.js"></script>
 </head>
+
 <body>
     <header style="background-color: cadetblue; padding: 10px; margin: 0%; text-align: center;">
         <h1
             style="color: white; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
-            Scroll Game</h1>
+            <a href="../index.html" style="text-decoration: none; color: white;">Scroll Game</a></h1>
     </header>
 
-    <div style="text-align: center;">
-        <h1>Score : <span id="score">0</span></h1>
+    <h2 style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
+        Explications :</h2>
+    <p style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;"> -
+        En scrollant vous augmentrez votre score qui vous augmentra la taille de votre police</p>
+    <p style="padding-bottom: 40px;"></p>
+
+    <div
+        style="text-align: center; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
+        <p id="scoreText" style="font-size: 0px;">Score : <span id="score">0</span></p>
     </div>
 
     <script>
@@ -23,4 +32,5 @@
         });
     </script>
 </body>
+
 </html>
