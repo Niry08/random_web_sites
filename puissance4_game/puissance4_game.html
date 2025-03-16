@@ -4,42 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Puissance 4</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: start;
-            background-color: #FFFFFF;
-        }
-        .board {
-            display: grid;
-            grid-template-columns: repeat(7, 70px);
-            grid-gap: 8px;
-            background-color: #A3CEF1;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
-            margin-top: 20px;
-        }
-        .cell {
-            width: 70px;
-            height: 70px;
-            background-color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        .cell:hover {
-            transform: scale(1.1);
-        }
-        .cell.red { background-color: red; }
-        .cell.yellow { background-color: yellow; }
-    </style>
+    <link rel="stylesheet" href="puissance4_game.css">
 </head>
 <body>
 
@@ -82,7 +47,7 @@
                     }
 
                     setTimeout(() => alert(`Le joueur ${colorPlayer} à gagné !`), 100);
-                    location.reload();
+                    setTimeout(() => location.reload(), 1000);
                     return;
                 }
                 currentPlayer = 'yellow';
@@ -100,7 +65,7 @@
                         var colorPlayer = 'jaune'
                     }
                     setTimeout(() => alert(`Le joueur ${colorPlayer} à gagné !`), 100);
-                    location.reload();
+                    setTimeout(() => location.reload(), 1000);
                     return;
                 }
                 currentPlayer = 'red';
