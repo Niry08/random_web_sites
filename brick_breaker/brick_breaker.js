@@ -13,8 +13,8 @@ var ctx = canvas.getContext("2d");
 var x = canvas.width / 2;
 var y = canvas.height - 30;
 
-var dx = 2;
-var dy = -2;
+var dx = 5;
+var dy = -5;
 
 var ballRadius = 10;
 
@@ -76,10 +76,20 @@ function detectCollision() {
     if (x + dx > canvas.width - ballRadius || x + dx < 0 + ballRadius) {
         dx = -dx;
     }
-
     if (y + dy > canvas.height - ballRadius || y + dy < 0 + ballRadius) {
         dy = -dy;
     }
+
+    if (x > paddleX && x < paddleX + paddleWidth && y > canvas.height - paddleHeight * 2) {
+        dy = -dy;
+    }
+
+    console.log('y' + y);
+
+    if (y + ballRadius + 3 >= canvas.height) { // problèmes
+        alert("Game Over"); 
+    }
+
 }
 
 function movePaddle() {
