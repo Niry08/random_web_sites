@@ -28,6 +28,9 @@ var leftPressed = false;
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
+var posRecX = 40;
+var posRecY = 40;
+
 function keyDownHandler(e) {
     if (e.key == "Right" || e.key == "ArrowRight") {
         rightPressed = true;
@@ -61,10 +64,29 @@ function drawPaddle() {
     ctx.closePath();
 }
 
+function drawRectangle() {
+    for (i = 0; i < 10; i++) {
+        for (j = 0; j < 4; j++) {
+            ctx.beginPath();
+            ctx.rect(posRecX, posRecY, 120, 40);
+            ctx.fillStyle = "#FF0000";
+            ctx.fill();
+            ctx.closePath();
+            posRecY += 60
+        }
+        posRecY = 40;
+        posRecX += 148;
+    }
+
+    posRecX = 40;
+    posRecY = 40;
+}
+
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     detectCollision();
+    drawRectangle();
     drawBall();
     drawPaddle();
     movePaddle();
@@ -80,7 +102,7 @@ function detectCollision() {
         dy = -dy;
     }
 
-    if (x > paddleX && x < paddleX + paddleWidth && y > canvas.height - paddleHeight * 2) {
+    if (x > paddleX + ballRadius && x < paddleX + paddleWidth && y > canvas.height - paddleHeight * 2) {
         dy = -dy;
     }
 
@@ -103,6 +125,8 @@ function movePaddle() {
         if (paddleX < 0) {
             paddleX = 0;
         }
+    } else {
+        paddleX = paddleX;
     }
 }
 
