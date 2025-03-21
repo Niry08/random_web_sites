@@ -1,8 +1,8 @@
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 document.body.appendChild(canvas);
-canvas.width = innerWidth - 10;
-canvas.height = innerHeight - 15;
+canvas.width = innerWidth;
+canvas.height = innerHeight;
 
 var rightPressed = false;
 var leftPressed = false;
@@ -26,17 +26,19 @@ function keyUpHandler(e) {
     }
 }
 
+var score = 0;
+
 class Rectangle {
     constructor(x, y, width, height) {
-        this.x = x;
-        this.y = y;
+        this.x = x + canvas.width * 0.025;
+        this.y = y + canvas.height * 0.025;
         this.width = width;
         this.height = height;
         this.hit = false;
     }
 
     draw(ctx) {
-        ctx.fillStyle = this.hit ? "#fff" : "blue";
+        ctx.fillStyle = this.hit ? "#E7ECEF" : "#274C77";
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 
@@ -60,7 +62,7 @@ class Ball {
     }
 
     draw(ctx) {
-        ctx.fillStyle = "red";
+        ctx.fillStyle = "#A3CEF1";
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fill();
@@ -79,8 +81,16 @@ class Ball {
     }
 
     checkCollision(paddle) {
-        if (this.x - this.radius / 2 > paddle.x && this.x + this.radius / 2 < paddle.x + paddle.width && this.y + this.radius >= paddle.y) {
+        if (this.x - this.radius > paddle.x && this.x + this.radius < paddle.x + paddle.width && this.y + this.radius >= paddle.y) {
             this.dy *= -1;
+        }
+
+        console.log(this.y + this.radius, paddle.y);
+
+        if (this.y - this.radius * 1.1 >= paddle.y) {
+            score = 'Game Over';
+            cancelAnimationFrame(update);
+            document.getElementById("gameOverButton").style.visibility = "visible";
         }
     }
 
@@ -96,7 +106,7 @@ class Paddle {
     }
 
     draw(ctx) {
-        ctx.fillStyle = "green";
+        ctx.fillStyle = "#8B8C89";
         ctx.beginPath();
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.fill();
@@ -104,12 +114,12 @@ class Paddle {
 
     move() {
         if (rightPressed) {
-            this.x += 7;
-            if (this.x + this.width > canvas.width - 10) {
-                this.x = canvas.width - this.width - 10;
+            this.x += 12;
+            if (this.x + this.width > canvas.width) {
+                this.x = canvas.width - this.width;
             }
         } else if (leftPressed) {
-            this.x -= 7;
+            this.x -= 12;
             if (this.x < 0) {
                 this.x = 0;
             }
@@ -117,25 +127,34 @@ class Paddle {
     }
 }
 
+function writeText() {
+    ctx.fillStyle = "#8B8C89";
+    ctx.font = "bold 80px Impact";
+    ctx.textAlign = "center";
+    ctx.fillText(score, canvas.width / 2, canvas.height / 2);
+}
+
 const rectangles = [];
 const cols = 10;
 const rows = 4;
-const rectWidth = canvas.width / cols;
+const rectWidth = (canvas.width * 0.95) / cols;
 const rectHeight = 50;
 
 for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
-        rectangles.push(new Rectangle(col * rectWidth, row * rectHeight * 1.1, rectWidth - 15, rectHeight - 4));
+        rectangles.push(new Rectangle(col * rectWidth, row * rectHeight * 1.3, rectWidth - 20, rectHeight));
     }
 }
 
-const ball = new Ball(300, 350, 10, 2, -2);
-const paddle = new Paddle(innerWidth / 2, innerHeight - 100, 100, 10);
+const ball = new Ball(300, 350, 10, 8, -8);
+const paddle = new Paddle(innerWidth / 2, innerHeight - 100, 125, 10);
 
 function update() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     rectangles.forEach(rect => rect.draw(ctx));
+
+    writeText();
 
     ball.move();
     ball.draw(ctx);
@@ -147,6 +166,7 @@ function update() {
         if (!rect.hit && rect.checkCollision(ball)) {
             rect.hit = true;
             ball.dy *= -1;
+            score++;
         }
     });
 

@@ -5,10 +5,15 @@
   <meta charset="utf-8" />
   <title>Break Breaker</title>
   <link rel="stylesheet" href="brick_breaker.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/light.css" />
+  <script type="module"
+    src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+
 </head>
 
 <body>
-  <header style="background-color: cadetblue; padding: 10px; margin: 0%; text-align: center;">
+  <header style="background-color: cadetblue; padding: 10px; text-align: center; margin: 10px;">
     <h1
       style="color: white; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
       <a href="../index.html" style="text-decoration: none; color: white;">Brick Breaker</a>
@@ -16,6 +21,23 @@
   </header>
 
   <canvas id="myCanvas"></canvas>
+
+  <div style="text-align: center; 
+            margin-bottom: 10px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            width: 100%; 
+            height: 100vh; 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%);
+            visibility: hidden;" id="gameOverButton" onclick="location.reload();">
+    <sl-button>Coucou</sl-button>
+  </div>
+
+
 
   <script src="brick_breaker.js"></script>
 </body>

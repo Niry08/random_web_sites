@@ -4,7 +4,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    background-color: #FFFFFF;
+    background-color: #E7ECEF;
 }
 .board {
     display: grid;

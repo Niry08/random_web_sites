@@ -4,8 +4,6 @@ var area = 0;
 var iteration = 10;
 
 function gameBegin() {
-    console.log("Begin of the game");
-
     document.body.removeChild(document.getElementById('button'));
 
     document.getElementById('score').style.visibility = "visible";

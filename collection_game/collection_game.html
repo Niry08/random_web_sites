@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collection Game</title>
+    <link rel="stylesheet" href="collection_game.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/light.css" />
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+
+</head>
+
+<body>
+    <header style="background-color: cadetblue; padding: 10px; margin: 0%; text-align: center;">
+        <h1
+            style="color: white; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
+            <a href="../index.html" style="text-decoration: none; color: white;">Collection Game</a>
+        </h1>
+    </header>
+
+    <div style="visibility: hidden;" id="gameBegin">
+        <h2 style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;;">Choissiez votre élément de départ :</h2>
+        <sl-button class="choice" onclick="choice1()">Choice 1</sl-button>
+        <sl-button class="choice"onclick="choice1()">Choice 2</sl-button>
+        <sl-button class="choice"onclick="choice1()">Choice 3</sl-button>
+    </div>
+
+    <h2 id="bravo" style="visibility: hidden;">Bravo vous avez choisi un element</h2>
+
+
+    <div style="display: flex; justify-content: center; align-items: center; height: 50vh;" id="button">
+        <sl-button variant="primary" outline size="large" pill onclick="startGame()">Commencez le jeu</sl-button>
+    </div>
+
+    <script src="collection_game.js"></script>
+</body>
+
+</html>
