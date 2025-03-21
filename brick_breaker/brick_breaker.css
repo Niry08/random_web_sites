@@ -4,7 +4,11 @@
 }
 
 canvas {
-    background: #eee;
+    background: #fff;
     display: block;
-    margin: 0 auto;
+    margin: 15px 10px;
+}
+
+body {
+    overflow: hidden;
 }

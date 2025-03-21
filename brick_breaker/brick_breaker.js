@@ -1,26 +1,8 @@
-function resizeCanvas() {
-    const canvas = document.getElementById("myCanvas");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-
-window.addEventListener("load", resizeCanvas);
-window.addEventListener("resize", resizeCanvas);
-
-var canvas = document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
-
-var x = canvas.width / 2;
-var y = canvas.height - 30;
-
-var dx = 5;
-var dy = -5;
-
-var ballRadius = 10;
-
-var paddleHeight = 10;
-var paddleWidth = 75;
-var paddleX = (canvas.width - paddleWidth) / 2;
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+document.body.appendChild(canvas);
+canvas.width = innerWidth - 10;
+canvas.height = innerHeight - 15;
 
 var rightPressed = false;
 var leftPressed = false;
@@ -28,106 +10,149 @@ var leftPressed = false;
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
-var posRecX = 40;
-var posRecY = 40;
-
 function keyDownHandler(e) {
-    if (e.key == "Right" || e.key == "ArrowRight") {
+    if (e.key === "ArrowRight" || e.key === "Right") {
         rightPressed = true;
-    } else if (e.key == "Left" || e.key == "ArrowLeft") {
+    } else if (e.key === "ArrowLeft" || e.key === "Left") {
         leftPressed = true;
     }
 }
 
 function keyUpHandler(e) {
-    if (e.key == "Right" || e.key == "ArrowRight") {
+    if (e.key === "ArrowRight" || e.key === "Right") {
         rightPressed = false;
-    } else if (e.key == "Left" || e.key == "ArrowLeft") {
+    } else if (e.key === "ArrowLeft" || e.key === "Left") {
         leftPressed = false;
     }
 }
 
-
-function drawBall() {
-    ctx.beginPath();
-    ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-    ctx.fillStyle = "#0095DD";
-    ctx.fill();
-    ctx.closePath();
-}
-
-function drawPaddle() {
-    ctx.beginPath();
-    ctx.rect(paddleX, canvas.height - paddleHeight * 2, paddleWidth, paddleHeight);
-    ctx.fillStyle = "#0095DD";
-    ctx.fill();
-    ctx.closePath();
-}
-
-function drawRectangle() {
-    for (i = 0; i < 10; i++) {
-        for (j = 0; j < 4; j++) {
-            ctx.beginPath();
-            ctx.rect(posRecX, posRecY, 120, 40);
-            ctx.fillStyle = "#FF0000";
-            ctx.fill();
-            ctx.closePath();
-            posRecY += 60
-        }
-        posRecY = 40;
-        posRecX += 148;
+class Rectangle {
+    constructor(x, y, width, height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.hit = false;
     }
 
-    posRecX = 40;
-    posRecY = 40;
+    draw(ctx) {
+        ctx.fillStyle = this.hit ? "#fff" : "blue";
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+
+    checkCollision(ball) {
+        return (
+            ball.x + ball.radius > this.x &&
+            ball.x - ball.radius < this.x + this.width &&
+            ball.y + ball.radius > this.y &&
+            ball.y - ball.radius < this.y + this.height
+        );
+    }
 }
 
+class Ball {
+    constructor(x, y, radius, dx, dy) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.dx = dx;
+        this.dy = dy;
+    }
 
-function draw() {
+    draw(ctx) {
+        ctx.fillStyle = "red";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    move() {
+        this.x += this.dx;
+        this.y += this.dy;
+
+        if (this.x - this.radius < 0 || this.x + this.radius > canvas.width) {
+            this.dx *= -1;
+        }
+        if (this.y - this.radius < 0 || this.y + this.radius > canvas.height) {
+            this.dy *= -1;
+        }
+    }
+
+    checkCollision(paddle) {
+        if (this.x - this.radius / 2 > paddle.x && this.x + this.radius / 2 < paddle.x + paddle.width && this.y + this.radius >= paddle.y) {
+            this.dy *= -1;
+        }
+    }
+
+    checkEndGame() { }
+}
+
+class Paddle {
+    constructor(x, y, width, height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+    }
+
+    draw(ctx) {
+        ctx.fillStyle = "green";
+        ctx.beginPath();
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.fill();
+    }
+
+    move() {
+        if (rightPressed) {
+            this.x += 7;
+            if (this.x + this.width > canvas.width - 10) {
+                this.x = canvas.width - this.width - 10;
+            }
+        } else if (leftPressed) {
+            this.x -= 7;
+            if (this.x < 0) {
+                this.x = 0;
+            }
+        }
+    }
+}
+
+const rectangles = [];
+const cols = 10;
+const rows = 4;
+const rectWidth = canvas.width / cols;
+const rectHeight = 50;
+
+for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+        rectangles.push(new Rectangle(col * rectWidth, row * rectHeight * 1.1, rectWidth - 15, rectHeight - 4));
+    }
+}
+
+const ball = new Ball(300, 350, 10, 2, -2);
+const paddle = new Paddle(innerWidth / 2, innerHeight - 100, 100, 10);
+
+function update() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    detectCollision();
-    drawRectangle();
-    drawBall();
-    drawPaddle();
-    movePaddle();
-    x += dx;
-    y += dy;
-}
 
-function detectCollision() {
-    if (x + dx > canvas.width - ballRadius || x + dx < 0 + ballRadius) {
-        dx = -dx;
-    }
-    if (y + dy > canvas.height - ballRadius || y + dy < 0 + ballRadius) {
-        dy = -dy;
-    }
+    rectangles.forEach(rect => rect.draw(ctx));
 
-    if (x > paddleX + ballRadius && x < paddleX + paddleWidth && y > canvas.height - paddleHeight * 2) {
-        dy = -dy;
-    }
+    ball.move();
+    ball.draw(ctx);
 
-    console.log('y' + y);
+    paddle.draw(ctx);
+    paddle.move();
 
-    if (y + ballRadius + 3 >= canvas.height) { // problèmes
-        alert("Game Over"); 
-    }
-
-}
-
-function movePaddle() {
-    if (rightPressed) {
-        paddleX += 7;
-        if (paddleX + paddleWidth > canvas.width) {
-            paddleX = canvas.width - paddleWidth;
+    rectangles.forEach(rect => {
+        if (!rect.hit && rect.checkCollision(ball)) {
+            rect.hit = true;
+            ball.dy *= -1;
         }
-    } else if (leftPressed) {
-        paddleX -= 7;
-        if (paddleX < 0) {
-            paddleX = 0;
-        }
-    } else {
-        paddleX = paddleX;
-    }
+    });
+
+    ball.checkCollision(paddle);
+
+    requestAnimationFrame(update);
 }
 
-setInterval(draw, 10);
+update();
