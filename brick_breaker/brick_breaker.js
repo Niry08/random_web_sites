@@ -27,6 +27,8 @@ function keyUpHandler(e) {
 }
 
 var score = 0;
+var time = 0;
+let animationId;
 
 class Rectangle {
     constructor(x, y, width, height) {
@@ -75,26 +77,29 @@ class Ball {
         if (this.x - this.radius < 0 || this.x + this.radius > canvas.width) {
             this.dx *= -1;
         }
-        if (this.y - this.radius < 0 || this.y + this.radius > canvas.height) {
+        if (this.y - this.radius < 0) {
             this.dy *= -1;
         }
     }
 
     checkCollision(paddle) {
-        if (this.x - this.radius > paddle.x && this.x + this.radius < paddle.x + paddle.width && this.y + this.radius >= paddle.y) {
+        if (
+            this.x + this.radius > paddle.x &&
+            this.x < paddle.x + paddle.width &&
+            this.y + this.radius > paddle.y &&
+            this.y - this.radius < paddle.y + paddle.height
+        ) {
             this.dy *= -1;
+            this.y = paddle.y - this.radius;
         }
 
-        console.log(this.y + this.radius, paddle.y);
-
-        if (this.y - this.radius * 1.1 >= paddle.y) {
+        if (this.y - 2 * this.radius > innerHeight) {
             score = 'Game Over';
-            cancelAnimationFrame(update);
+            end();
             document.getElementById("gameOverButton").style.visibility = "visible";
+            cancelAnimationFrame(animationId);
         }
     }
-
-    checkEndGame() { }
 }
 
 class Paddle {
@@ -131,23 +136,48 @@ function writeText() {
     ctx.fillStyle = "#8B8C89";
     ctx.font = "bold 80px Impact";
     ctx.textAlign = "center";
-    ctx.fillText(score, canvas.width / 2, canvas.height / 2);
+    if (score === "win") {
+        ctx.fillText('You win in ' + timee + 's', canvas.width / 2, canvas.height / 1.85);
+    } else {
+        ctx.fillText(score, canvas.width / 2, canvas.height / 1.85);
+    }
 }
+
 
 const rectangles = [];
 const cols = 10;
 const rows = 4;
-const rectWidth = (canvas.width * 0.95) / cols;
-const rectHeight = 50;
+const rectWidth = (canvas.width * 0.98) / cols;
+const rectHeight = 38;
 
-for (let row = 0; row < rows; row++) {
-    for (let col = 0; col < cols; col++) {
-        rectangles.push(new Rectangle(col * rectWidth, row * rectHeight * 1.3, rectWidth - 20, rectHeight));
+function endGame() {
+    if (score == cols * rows) {
+        score = 'win';
+        end();
+        document.getElementById("gameOverButton").style.visibility = "visible";
+        cancelAnimationFrame(animationId);
     }
 }
 
-const ball = new Ball(300, 350, 10, 8, -8);
+for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+        rectangles.push(new Rectangle(col * rectWidth, row * rectHeight * 1.7, rectWidth - 45, rectHeight));
+    }
+}
+
 const paddle = new Paddle(innerWidth / 2, innerHeight - 100, 125, 10);
+
+var posXBall = Math.floor(Math.random() * (canvas.width - 150) + 150);
+var posYBall = Math.floor(Math.random() * (canvas.height - 50) + 50);
+
+if (posYBall < 8 * rectHeight) {
+    posYBall = canvas.height / 2;
+}
+if (posYBall > canvas.height - 3 * paddle.height) {
+    posYBall = canvas.height / 2;
+}
+
+const ball = new Ball(posXBall, posYBall, 10, 6, -6);
 
 function update() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -172,7 +202,22 @@ function update() {
 
     ball.checkCollision(paddle);
 
-    requestAnimationFrame(update);
+    if (score !== "Game Over") {
+        animationId = requestAnimationFrame(update);
+    }
+}
+
+function end() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    rectangles.forEach(rect => rect.draw(ctx));
+
+    writeText();
+    paddle.draw(ctx);
 }
 
 update();
+
+setInterval(() => {
+    time++;
+}, 1000);
