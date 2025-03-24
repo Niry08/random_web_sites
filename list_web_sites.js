@@ -4,6 +4,7 @@ const sites = [
     'puissance4_game/puissance4_game.html',
     'brick_breaker/brick_breaker.html',
     // 'collection_game/collection_game.html',
+    // 'memory_game/memory_game.html',
 ];
 
 function getRandomSite() {
