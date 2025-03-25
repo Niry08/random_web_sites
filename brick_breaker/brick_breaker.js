@@ -7,6 +7,9 @@ canvas.height = innerHeight;
 var rightPressed = false;
 var leftPressed = false;
 
+window.addEventListener("resize", () => {
+    location.reload();
+});
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
@@ -40,8 +43,11 @@ class Rectangle {
     }
 
     draw(ctx) {
-        ctx.fillStyle = this.hit ? "#E7ECEF" : "#274C77";
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        if (!this.hit) {
+            const img = new Image();
+            img.src = "assets/brick.png";
+            ctx.drawImage(img, this.x, this.y, this.width, this.height);
+        }
     }
 
     checkCollision(ball) {
@@ -64,10 +70,9 @@ class Ball {
     }
 
     draw(ctx) {
-        ctx.fillStyle = "#A3CEF1";
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fill();
+        const img = new Image();
+        img.src = "assets/ball.png";
+        ctx.drawImage(img, this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2);
     }
 
     move() {
@@ -89,7 +94,8 @@ class Ball {
             this.y + this.radius > paddle.y &&
             this.y - this.radius < paddle.y + paddle.height
         ) {
-            this.dy *= -1;
+            this.dx = 8 * ((this.x - (paddle.x + paddle.width / 2)) / paddle.width);
+            this.dy *= -1
             this.y = paddle.y - this.radius;
         }
 
@@ -119,12 +125,12 @@ class Paddle {
 
     move() {
         if (rightPressed) {
-            this.x += 12;
+            this.x += 15;
             if (this.x + this.width > canvas.width) {
                 this.x = canvas.width - this.width;
             }
         } else if (leftPressed) {
-            this.x -= 12;
+            this.x -= 15;
             if (this.x < 0) {
                 this.x = 0;
             }
@@ -136,35 +142,35 @@ function writeText() {
     ctx.fillStyle = "#8B8C89";
     ctx.font = "bold 80px Impact";
     ctx.textAlign = "center";
-    if (score === "win") {
-        ctx.fillText('You win in ' + timee + 's', canvas.width / 2, canvas.height / 1.85);
-    } else {
+    if (score !== "win") {
         ctx.fillText(score, canvas.width / 2, canvas.height / 1.85);
     }
 }
 
-
 const rectangles = [];
-const cols = 10;
-const rows = 4;
-const rectWidth = (canvas.width * 0.98) / cols;
+const cols = Math.floor(innerWidth / 200);
+const rows = 5;
+const rectWidth = (canvas.width * 0.95) / cols;
 const rectHeight = 38;
 
 function endGame() {
     if (score == cols * rows) {
         score = 'win';
         end();
-        document.getElementById("gameOverButton").style.visibility = "visible";
         cancelAnimationFrame(animationId);
+        explode();
+        animate();
+        clearInterval(timer);
     }
 }
 
 for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
-        rectangles.push(new Rectangle(col * rectWidth, row * rectHeight * 1.7, rectWidth - 45, rectHeight));
+        rectangles.push(new Rectangle(col * rectWidth * 1.035, row * rectHeight * 1.7, rectWidth - 65, rectHeight));
     }
 }
 
+var widthPaddle = Math.floor(innerWidth / 150)
 const paddle = new Paddle(innerWidth / 2, innerHeight - 100, 125, 10);
 
 var posXBall = Math.floor(Math.random() * (canvas.width - 150) + 150);
@@ -177,32 +183,33 @@ if (posYBall > canvas.height - 3 * paddle.height) {
     posYBall = canvas.height / 2;
 }
 
-const ball = new Ball(posXBall, posYBall, 10, 6, -6);
+const ball = new Ball(posXBall, posYBall, 10, 8, -8);
 
 function update() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (score !== "Game Over" && score !== "win") {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    rectangles.forEach(rect => rect.draw(ctx));
+        rectangles.forEach(rect => rect.draw(ctx));
 
-    writeText();
+        writeText();
 
-    ball.move();
-    ball.draw(ctx);
+        ball.move();
+        ball.draw(ctx);
 
-    paddle.draw(ctx);
-    paddle.move();
+        paddle.draw(ctx);
+        paddle.move();
 
-    rectangles.forEach(rect => {
-        if (!rect.hit && rect.checkCollision(ball)) {
-            rect.hit = true;
-            ball.dy *= -1;
-            score++;
-        }
-    });
+        rectangles.forEach(rect => {
+            if (!rect.hit && rect.checkCollision(ball)) {
+                rect.hit = true;
+                ball.dy *= -1;
+                score++;
+            }
+        });
 
-    ball.checkCollision(paddle);
+        ball.checkCollision(paddle);
 
-    if (score !== "Game Over") {
+        endGame();
         animationId = requestAnimationFrame(update);
     }
 }
@@ -210,14 +217,93 @@ function update() {
 function end() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    rectangles.forEach(rect => rect.draw(ctx));
-
     writeText();
     paddle.draw(ctx);
 }
 
 update();
 
-setInterval(() => {
+// Feux d'artifice
+const gravity = 0.05;
+const friction = 0.99;
+let particles = [];
+let particleCount = 1000;
+let mouse;
+
+class Particle {
+    constructor(x, y, r, color, velocity) {
+        this.x = x;
+        this.y = y;
+        this.r = r;
+        this.color = color;
+        this.dx = velocity.x;
+        this.dy = velocity.y;
+        this.opacity = 1;
+    }
+    draw() {
+        ctx.save();
+        ctx.globalAlpha = this.opacity;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.restore();
+        ctx.closePath();
+    }
+    updateFD() {
+        this.draw();
+        this.dy += gravity;
+
+        this.dx *= friction;
+        this.dy *= friction;
+
+        this.x += this.dx;
+        this.y += this.dy;
+
+        this.opacity -= 0.01;
+    }
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    ctx.fillStyle = "rgba(231, 236, 239, 0.1)";
+    ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+
+    particles.forEach((particle, i) => {
+        if (particle.opacity > 0) {
+            particle.updateFD();
+        } else {
+            particles.splice(i, 1);
+        }
+    });
+
+    if (particles.length === 0 && score === "win") {
+        ctx.save();
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = "#8B8C89";
+        ctx.font = "bold 80px Impact";
+        ctx.textAlign = "center";
+        ctx.fillText('You win in ' + time + 's', canvas.width / 2, canvas.height / 2);
+        ctx.restore();
+
+        document.getElementById("gameOverButton").style.visibility = "visible";
+    }
+}
+
+function explode(x = canvas.width / 2, y = canvas.height / 2) {
+    let speed = 40;
+    let angleIncrement = (Math.PI * 2) / particleCount;
+
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(
+            new Particle(x, y, 2, `hsl(${Math.random() * 360}, 50%, 50%)`, {
+                x: Math.cos(angleIncrement * i) * Math.random() * speed,
+                y: Math.sin(angleIncrement * i) * Math.random() * speed
+            })
+        );
+    }
+}
+
+const timer = setInterval(() => {
     time++;
 }, 1000);
