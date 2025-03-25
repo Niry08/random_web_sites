@@ -1,0 +1,2 @@
+- mettre une fin avec le score
+- faire que l'ordre des images soit aléatoire
