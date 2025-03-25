@@ -9,42 +9,16 @@
 </head>
 
 <body>
-    <header style="background-color: cadetblue; padding: 10px; margin: 0%; text-align: center;">
-        <h1
-            style="color: white; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
-            <a href="../index.html" style="text-decoration: none; color: white;">Memory Game</a>
+    <header>
+        <h1>
+          <a href="../index.html">Memory Game</a>
         </h1>
-    </header>
+        <div>
+            <button onclick="window.location.href='settings/settings.html'"><img src="../assets/setting.png" alt="Settings"></button>
+        </div>
+      </header>
 
-    <div class="container">
-        <div class="card">
-            <img src="images/mustangs.jpg" alt="image mustangs">
-        </div>
-        <div class="card">
-            <img src="images/mustangs.jpg" alt="image mustangs">
-        </div>
-        <div class="card">
-            <img src="images/mustangs.jpg" alt="image mustangs">
-        </div>
-        <div class="card">
-            <img src="images/mustangs.jpg" alt="image mustangs">
-        </div>
-        <div class="card">
-            <img src="images/mustangs.jpg" alt="image mustangs">
-        </div>
-        <div class="card">
-            <img src="images/mustangs.jpg" alt="image mustangs">
-        </div>
-        <div class="card">
-            <img src="images/mustangs.jpg" alt="image mustangs">
-        </div>
-        <div class="card">
-            <img src="images/mustangs.jpg" alt="image mustangs">
-        </div>
-        <div class="card">
-            <img src="images/mustangs.jpg" alt="image mustangs">
-        </div>
-    </div>
+    <canvas id="myCanvas"></canvas>
+    <script src="memory_game.js"></script>
 </body>
-
 </html>
