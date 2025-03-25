@@ -6,8 +6,8 @@ canvas.height = window.innerHeight;
 
 // Variables
 const cards = [];
-const cols = 9;
-const rows = 5;
+const cols = 7;
+const rows = 4;
 
 let countCardFlipped = 0;
 
