@@ -111,7 +111,7 @@ class Ball {
 class Paddle {
     constructor(x, y, width, height) {
         this.x = x;
-        this.y = y;
+        this.y = y - 45;
         this.width = width;
         this.height = height;
     }
