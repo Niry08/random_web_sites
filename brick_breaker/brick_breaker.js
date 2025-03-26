@@ -44,9 +44,8 @@ class Rectangle {
 
     draw(ctx) {
         if (!this.hit) {
-            const img = new Image();
-            img.src = "assets/brick.png";
-            ctx.drawImage(img, this.x, this.y, this.width, this.height);
+            ctx.fillStyle = "#274C77";
+            ctx.fillRect(this.x, this.y, this.width, this.height);
         }
     }
 
@@ -143,7 +142,7 @@ function writeText() {
     ctx.font = "bold 80px Impact";
     ctx.textAlign = "center";
     if (score !== "win") {
-        ctx.fillText(score, canvas.width / 2, canvas.height / 1.85);
+        ctx.fillText(score, canvas.width / 2, canvas.height / 2.1);
     }
 }
 
@@ -218,7 +217,6 @@ function end() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     writeText();
-    paddle.draw(ctx);
 }
 
 update();
@@ -283,7 +281,7 @@ function animate() {
         ctx.fillStyle = "#8B8C89";
         ctx.font = "bold 80px Impact";
         ctx.textAlign = "center";
-        ctx.fillText('You win in ' + time + 's', canvas.width / 2, canvas.height / 2);
+        ctx.fillText('You win in ' + time + 's', canvas.width / 2, canvas.height / 2.4);
         ctx.restore();
 
         document.getElementById("gameOverButton").style.visibility = "visible";

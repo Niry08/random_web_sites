@@ -6,10 +6,16 @@ canvas.height = window.innerHeight;
 
 // Variables
 const cards = [];
-const cols = 7;
-const rows = 4;
+const cols = 8;
+const rows = 5;
 
+if (cols * rows % 2 != 0) {
+    cols += 1;
+}
+
+let countPair = 0;
 let countCardFlipped = 0;
+let time = 0;
 
 let animationId;
 let imgSrc;
@@ -23,8 +29,10 @@ let cardSize;
 if (innerHeight / rows > innerWidth / cols) {
     cardSize = innerWidth / cols - innerWidth / cols * 0.2;
 } else {
-    cardSize = (innerHeight - 50) / rows - innerHeight / rows * 0.2;
+    cardSize = (innerHeight - 70) / rows - innerHeight / rows * 0.2;
 }
+
+const margin = (innerWidth - cols * cardSize * 1.2) / 2;
 
 // Images
 const imgLogo = new Image();
@@ -41,7 +49,7 @@ class Card {
     constructor(imageBack, x, y, width, height) {
         this.currentImage = imgLogo;
         this.imageBack = imageBack;
-        this.x = x + canvas.width * 0.025;
+        this.x = x + margin;
         this.y = y + canvas.height * 0.025;
         this.width = width;
         this.height = height;
@@ -58,24 +66,25 @@ class Card {
     }
 
     flip() {
-        if (countCardFlipped < 2) {
+        if (countPair < 2) {
             this.isFlipped = !this.isFlipped;
 
             this.currentImage = this.imageBack;
-            countCardFlipped++;
+            countPair++;
 
-            if (countCardFlipped == 1) {
+            if (countPair == 1) {
                 imgSrc = this.currentImage.src;
                 console.log(imgSrc);
-                console.log(countCardFlipped);
+                console.log(countPair);
             }
 
-            if (countCardFlipped == 2) {
+            if (countPair == 2) {
                 console.log(this.currentImage.src);
                 if (this.currentImage.src == imgSrc) {
                     imagesFinished.push(imgSrc);
                     console.log("takePair");
-                    countCardFlipped = 0;
+                    countPair = 0;
+                    countCardFlipped += 2;
                 }
                 else {
                     setTimeout(() => {
@@ -85,7 +94,7 @@ class Card {
                                 card.currentImage = imgLogo;
                             }
                         });
-                        countCardFlipped = 0;
+                        countPair = 0;
                     }, 1000);
                     imgSrc = '';
                 }
@@ -100,7 +109,8 @@ function addCard() {
         for (let col = 0; col < cols; col++) {
             var image = new Image();
 
-            imagesUrl = imagesUrl.sort(() => Math.random() * 0.5);
+            // imagesUrl = imagesUrl.sort(() => Math.random() * 0.5);
+            imagesUrl = shuffleTab(imagesUrl);
 
             image.src = imagesUrl[0];
             imagesUrl.shift();
@@ -110,11 +120,30 @@ function addCard() {
     }
 }
 
+function shuffleTab(tableau)
+{
+	let i, j, element;
+	i = tableau["length"];
+	while (i > 1) {
+		j = Math.floor(Math.random() * i--);
+		element = tableau[i];
+		tableau[i] = tableau[j];
+		tableau[j] = element;
+	}
+	return tableau;
+}
+
 function update() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     cards.forEach(card => card.draw(ctx));
     animationId = requestAnimationFrame(update);
+
+    if (countCardFlipped == cols * rows) {
+        console.log("endGame");
+        setTimeout(() => { endGame(); }, 1000);
+        cancelAnimationFrame(animationId);
+    }
 }
 
 function handleClick(event) {
@@ -129,6 +158,18 @@ function handleClick(event) {
     });
 }
 
+function endGame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    clearInterval(timer);
+    ctx.font = "50px Impact";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    ctx.fillText("Bravo, vous avez gagné !", canvas.width / 2, canvas.height / 2.6);
+    ctx.font = "25px Imapct";
+    ctx.fillText("Vous avez trouvés " + cols*rows/2 + " paires, en " + time + "sec.", canvas.width / 2, canvas.height / 2.4);
+    document.getElementById("endGame").style.visibility = "visible";
+}
+
 // Début du jeu
 document.addEventListener("DOMContentLoaded", () => {
     imgLogo.onload = () => {
@@ -138,3 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 canvas.addEventListener("click", handleClick);
+
+const timer = setInterval(() => {
+    time++;
+}, 1000);
