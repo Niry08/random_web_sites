@@ -6,23 +6,20 @@ canvas.height = window.innerHeight;
 
 // Variables
 const cards = [];
-const cols = 8;
-const rows = 5;
+const cols = 2;
+const rows = 2;
 
-if (cols * rows % 2 != 0) {
+if (cols * rows % 2 !== 0) {
     cols += 1;
 }
 
-let countPair = 0;
 let countCardFlipped = 0;
-let time = 0;
+let tried = 0;
 
 let animationId;
-let imgSrc;
-
 let imagesUrl = [];
-let imagesUsed = [];
 let imagesFinished = [];
+let flippedCards = [];
 
 // CardSize
 let cardSize;
@@ -39,12 +36,11 @@ const imgLogo = new Image();
 imgLogo.src = "images/logo.png";
 
 for (let i = 1; i <= cols * rows / 2; i++) {
-    imageSrc = "images/" + i + ".jpg";
-    imagesUrl.push(imageSrc);
-    imagesUrl.push(imageSrc);
+    let imageSrc = "images/" + i + ".jpg";
+    imagesUrl.push(imageSrc, imageSrc);
 }
 
-// Classes
+// Classe Card
 class Card {
     constructor(imageBack, x, y, width, height) {
         this.currentImage = imgLogo;
@@ -61,91 +57,80 @@ class Card {
     }
 
     isClicked(mouseX, mouseY) {
-        return mouseX >= this.x && mouseX <= this.x + this.width &&
-            mouseY >= this.y && mouseY <= this.y + this.height;
+        return (
+            mouseX >= this.x &&
+            mouseX <= this.x + this.width &&
+            mouseY >= this.y &&
+            mouseY <= this.y + this.height
+        );
     }
 
     flip() {
-        if (countPair < 2) {
-            this.isFlipped = !this.isFlipped;
-
+        if (!this.isFlipped && flippedCards.length < 2) {
+            this.isFlipped = true;
             this.currentImage = this.imageBack;
-            countPair++;
+            flippedCards.push(this);
 
-            if (countPair == 1) {
-                imgSrc = this.currentImage.src;
-                console.log(imgSrc);
-                console.log(countPair);
-            }
-
-            if (countPair == 2) {
-                console.log(this.currentImage.src);
-                if (this.currentImage.src == imgSrc) {
-                    imagesFinished.push(imgSrc);
-                    console.log("takePair");
-                    countPair = 0;
-                    countCardFlipped += 2;
-                }
-                else {
-                    setTimeout(() => {
-                        cards.forEach(card => {
-                            let isFinished = imagesFinished.some(finishImage => finishImage === card.currentImage.src);
-                            if (!isFinished) {
-                                card.currentImage = imgLogo;
-                            }
-                        });
-                        countPair = 0;
-                    }, 1000);
-                    imgSrc = '';
-                }
+            if (flippedCards.length === 2) {
+                setTimeout(checkMatch, 1000);
             }
         }
     }
 }
 
-// Fonctions
+// Vérifie si les cartes sont identiques
+function checkMatch() {
+    tried++;
+    let [card1, card2] = flippedCards;
+
+    if (card1.imageBack.src === card2.imageBack.src) {
+        imagesFinished.push(card1.imageBack.src);
+        countCardFlipped += 2;
+    } else {
+        card1.isFlipped = false;
+        card2.isFlipped = false;
+        card1.currentImage = imgLogo;
+        card2.currentImage = imgLogo;
+    }
+
+    flippedCards = [];
+
+    if (countCardFlipped === cols * rows) {
+        setTimeout(endGame, 1000);
+        cancelAnimationFrame(animationId);
+    }
+}
+
+// Ajoute les cartes
 function addCard() {
+    imagesUrl = shuffleArray(imagesUrl);
+
     for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
-            var image = new Image();
-
-            // imagesUrl = imagesUrl.sort(() => Math.random() * 0.5);
-            imagesUrl = shuffleTab(imagesUrl);
-
-            image.src = imagesUrl[0];
-            imagesUrl.shift();
-
+            let image = new Image();
+            image.src = imagesUrl.pop();
             cards.push(new Card(image, col * cardSize * 1.2, row * cardSize * 1.2, cardSize, cardSize));
         }
     }
 }
 
-function shuffleTab(tableau)
-{
-	let i, j, element;
-	i = tableau["length"];
-	while (i > 1) {
-		j = Math.floor(Math.random() * i--);
-		element = tableau[i];
-		tableau[i] = tableau[j];
-		tableau[j] = element;
-	}
-	return tableau;
+// Mélange les images
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
 }
 
+// Met à jour le canvas
 function update() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     cards.forEach(card => card.draw(ctx));
     animationId = requestAnimationFrame(update);
-
-    if (countCardFlipped == cols * rows) {
-        console.log("endGame");
-        setTimeout(() => { endGame(); }, 1000);
-        cancelAnimationFrame(animationId);
-    }
 }
 
+// Gère le clic sur une carte
 function handleClick(event) {
     const rect = canvas.getBoundingClientRect();
     const mouseX = event.clientX - rect.left;
@@ -158,19 +143,20 @@ function handleClick(event) {
     });
 }
 
+// Fin du jeu
 function endGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    clearInterval(timer);
     ctx.font = "50px Impact";
     ctx.fillStyle = "black";
     ctx.textAlign = "center";
     ctx.fillText("Bravo, vous avez gagné !", canvas.width / 2, canvas.height / 2.6);
-    ctx.font = "25px Imapct";
-    ctx.fillText("Vous avez trouvés " + cols*rows/2 + " paires, en " + time + "sec.", canvas.width / 2, canvas.height / 2.4);
+    ctx.font = "25px Impact";
+    ctx.fillText(`Vous avez trouvé ${cols * rows / 2} paires en ${tried} coups.`, canvas.width / 2, canvas.height / 2.4);
+    ctx.fillText(`Efficacité : ${(cols * rows / 2 / tried * 100).toFixed(2)}%`, canvas.width / 2, canvas.height / 2.2);
     document.getElementById("endGame").style.visibility = "visible";
 }
 
-// Début du jeu
+// Démarrage du jeu
 document.addEventListener("DOMContentLoaded", () => {
     imgLogo.onload = () => {
         addCard();
@@ -179,7 +165,3 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 canvas.addEventListener("click", handleClick);
-
-const timer = setInterval(() => {
-    time++;
-}, 1000);
