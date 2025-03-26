@@ -4,7 +4,7 @@ var area = 0;
 var iteration = 10;
 
 function gameBegin() {
-    document.body.removeChild(document.getElementById('button'));
+    document.body.removeChild(document.getElementById('startButton'));
 
     document.getElementById('score').style.visibility = "visible";
 
@@ -81,5 +81,6 @@ function removeRectangle() {
 function endGame() {
     document.getElementById('score').style.visibility = "hidden";
     document.getElementById('endGame').style.visibility = "visible";
+    document.getElementById('endGameButton').style.visibility = "visible";
     document.getElementById("finalScore").innerHTML = score.toString();
 }

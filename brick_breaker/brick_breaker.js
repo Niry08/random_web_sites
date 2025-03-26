@@ -170,7 +170,7 @@ for (let row = 0; row < rows; row++) {
 }
 
 var widthPaddle = Math.floor(innerWidth / 150)
-const paddle = new Paddle(innerWidth / 2, innerHeight - 100, 125, 10);
+const paddle = new Paddle(innerWidth / 2, innerHeight - 120, 125, 10);
 
 var posXBall = Math.floor(Math.random() * (canvas.width - 150) + 150);
 var posYBall = Math.floor(Math.random() * (canvas.height - 50) + 50);

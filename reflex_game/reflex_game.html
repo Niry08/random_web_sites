@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reflex Game</title>
     <script src="reflex_game.js"></script>
+    <link rel="stylesheet" href="../style.css">
 </head>
+
 <body>
     <style>
         body {
@@ -13,21 +16,61 @@
             background-color: #E7ECEF;
         }
     </style>
-    <header style="background-color: cadetblue; padding: 10px; margin: 0%; text-align: center;">
-        <h1
-            style="color: white; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
-            <a href="../index.html" style="text-decoration: none; color: white;">Reflex Game</a></h1>
+    <header>
+        <h1>
+            <a href="../index.html">Reflex Game</a>
+        </h1>
+        <div class="left">
+            <button onclick="window.location.href='../index.html'"><img src="../assets/home.png"
+                    alt="Home icone"></button>
+        </div>
+        <div class="right">
+            <button onclick="window.location.href='settings/settings.html'"><img src="../assets/setting.png"
+                    alt="Settings icone"></button>
+        </div>
     </header>
 
-    <h2 style="padding-left: 10px; visibility: hidden;font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;" id="score">Score : <span id="scoreNum">0</span></h2>
+    <h2 style="padding-left: 10px; visibility: hidden;font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;"
+        id="score">Score : <span id="scoreNum">0</span></h2>
 
-    <div style="display: flex; justify-content: center; align-items: center; height: 80vh;" id="button">
-        <button onclick="gameBegin()"
-            style="background-color: rgb(140, 160, 167); width: 15%; height: 8%; font-size: large; border: none; border-radius: 20vh;">Début du jeu</button>
+    <div style="text-align: center; 
+            margin-bottom: 10px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            width: 100%; 
+            height: 100vh; 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -45%);
+            visibility: visible;" id="startButton" onclick="gameBegin()">
+        <button class="buttonDesign" role="button">
+            <h2>Let's begin game</h2>
+        </button>
     </div>
 
-    <div style="visibility: hidden; display: flex; justify-content: center; align-items: center; height: 80vh; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;" id="endGame">
+    <div style="visibility: hidden; display: flex; justify-content: center; align-items: center; height: 60vh; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;"
+        id="endGame">
         <h1>End - your score is : <span id="finalScore">0</span></h1>
     </div>
+
+    <div style="text-align: center; 
+            margin-bottom: 10px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            width: 100%; 
+            height: 100vh; 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -35%);
+            visibility: hidden;" id="endGameButton" onclick="location.reload();">
+        <button class="buttonDesign" role="button">
+            <h2>Start again</h2>
+        </button>
+    </div>
 </body>
+
 </html>

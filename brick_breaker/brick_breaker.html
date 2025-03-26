@@ -13,11 +13,17 @@
 </head>
 
 <body>
-  <header style="background-color: cadetblue; padding: 30px; text-align: center; margin: 10px;">
-    <h1
-      style="color: white; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
-      <a href="../index.html" style="text-decoration: none; color: white;">Brick Breaker</a>
+  <header>
+    <h1 style="padding: 20px;">
+      <a href="../index.html">Brick Breaker</a>
     </h1>
+    <div class="left">
+      <button onclick="window.location.href='../index.html'"><img src="../assets/home.png" alt="Home icone"></button>
+    </div>
+    <div class="right">
+      <button onclick="window.location.href='settings/settings.html'"><img src="../assets/setting.png"
+          alt="Settings icone"></button>
+    </div>
   </header>
 
   <canvas id="myCanvas"></canvas>
@@ -34,11 +40,12 @@
             left: 50%; 
             transform: translate(-50%, -30%);
             visibility: hidden;" id="gameOverButton" onclick="location.reload();">
-    <button class="buttonDesign" role="button"><h2>Start again</h2></button>
-    </div>
-
-
+    <button class="buttonDesign" role="button">
+      <h2>Start again</h2>
+    </button>
+  </div>
 
   <script src="brick_breaker.js"></script>
 </body>
+
 </html>

@@ -3,7 +3,12 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+
+    overflow: hidden;
+    background: rgb(231, 236, 239);
 }
+
+/* Button */
 
 .buttonDesign {
     background-color: transparent;
@@ -21,6 +26,7 @@ body {
     -webkit-user-select: none;
     touch-action: manipulation;
 }
+
 .buttonDesign:hover,
 .buttonDesign:active {
     outline: 0;
@@ -51,4 +57,53 @@ body {
     .button-51 {
         padding: 16px 32px;
     }
+}
+
+/* Header */
+header {
+    background-color: cadetblue;
+    padding: 20px;
+    text-align: center;
+    margin: 10px;
+    position: relative;
+}
+
+header h1 {
+    color: white;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+header h1 a {
+    text-decoration: none;
+    color: white;
+}
+
+.left {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.right {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+header div button {
+    background-color: cadetblue;
+    border: transparent;
+    cursor: pointer;
 }
