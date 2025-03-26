@@ -13,7 +13,7 @@ This project is a simple website featuring a button that redirects users to a ra
 - You can modify the list of website for your own utilisation
 
 ## Usage
-Go to randomwebsites.zapto.org, and have fun - or download the folder and use it in local.
+Go to [randomwebsites.zapto.org](http://randomwebsites.zapto.org), and have fun - or download the folder and use it locally.
 
 ## Customization
 To modify the list of random sites:
