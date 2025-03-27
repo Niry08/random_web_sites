@@ -6,8 +6,8 @@ canvas.height = window.innerHeight;
 
 // Variables
 const cards = [];
-const cols = 2;
-const rows = 2;
+const cols = 8;
+const rows = 7;
 
 if (cols * rows % 2 !== 0) {
     cols += 1;
