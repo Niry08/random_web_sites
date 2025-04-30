@@ -18,9 +18,13 @@
     <button onmousedown="holdButton(increase_price)" onmouseup="releaseButton()" onmouseleave="releaseButton()">Increase</button>
     <button onmousedown="holdButton(decrease_price)" onmouseup="releaseButton()" onmouseleave="releaseButton()">Decrease</button>
     <h3>Paperclip selling : <span id="paperclip_selling">0</span>/s</h3>
+    <h3>Income : <span id="income">0</span>$/s</h3>
     <h3>Auto clickers production : <span id="auto-clickers-capacity">0</span>/s</h3>
+    <h3>Marketing capacity : <span id="marketing_capacity">0</span></h3>
 
     <h1>Market :</h1>
     <div style="display: inline-flex; align-items: center;"><h2 style="margin: 0;">- Auto-clickers</h2> <button style="margin-left: 10px;" onclick="buy_autoclicker()"><span id="price_autoclicker">1</span>$</button></div>
+    <br>
+    <div style="display: inline-flex; align-items: center;"><h2 style="margin: 0;">- Marketing</h2> <button style="margin-left: 10px;" onclick="buy_marketing()"><span id="price_marketing">5</span>$</button></div>
 </body>
 </html>
