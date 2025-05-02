@@ -23,8 +23,8 @@ var price_marketing = 5;
 let intervalId;
 
 function init() {
-    document.getElementById("price").innerHTML = paperclipPrice.toString();
-    document.getElementById("money").innerHTML = money.toString();
+    document.getElementById("price").innerHTML = paperclipPrice.toFixed(2).toString();
+    document.getElementById("money").innerHTML = money.toFixed(2).toString();
 
     calculate_interval_selling();
 }
@@ -32,8 +32,8 @@ function init() {
 function add_paperclip() {
     paperclips += 1;
     paperclipsTotal += 1;
-    document.getElementById("paperclips_produce").innerHTML = paperclipsTotal.toString();
-    document.getElementById("paperclips").innerHTML = paperclips.toString();
+    document.getElementById("paperclips_produce").innerHTML = paperclipsTotal.toFixed(0).toString();
+    document.getElementById("paperclips").innerHTML = paperclips.toFixed(0).toString();
 }
 
 function calculate_production() {
