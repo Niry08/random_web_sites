@@ -26,6 +26,7 @@ function init() {
     document.getElementById("price").innerHTML = paperclipPrice.toFixed(2).toString();
     document.getElementById("money").innerHTML = money.toFixed(2).toString();
 
+    loadGame();
     calculate_interval_selling();
 }
 
@@ -161,4 +162,68 @@ function call_1000() {
     rendement_autoclicker_func();
 }
 
+// Sauvegarde de la partie
+function saveGame() {
+    const gameState = {
+        paperclips,
+        paperclipsTotal,
+        paperclipsProduce,
+        production,
+        paperclipPrice,
+        money,
+        price_autoclicker,
+        rendement_autoclicker,
+        marketing,
+        price_marketing
+    };
+
+    localStorage.setItem("paperclipsSave", JSON.stringify(gameState));
+}
+
+// Chargement de la partie
+function loadGame() {
+    const saved = localStorage.getItem("paperclipsSave");
+    if (saved) {
+        const gameState = JSON.parse(saved);
+
+        paperclips = gameState.paperclips;
+        paperclipsTotal = gameState.paperclipsTotal;
+        paperclipsProduce = gameState.paperclipsProduce;
+        production = gameState.production;
+        paperclipPrice = gameState.paperclipPrice;
+        money = gameState.money;
+        price_autoclicker = gameState.price_autoclicker;
+        rendement_autoclicker = gameState.rendement_autoclicker;
+        marketing = gameState.marketing;
+        price_marketing = gameState.price_marketing;
+
+        updateUI();
+    }
+}
+
+// Update UI
+function updateUI() {
+    document.getElementById("price").innerHTML = paperclipPrice.toFixed(2);
+    document.getElementById("money").innerHTML = money.toFixed(2);
+    document.getElementById("paperclips_produce").innerHTML = paperclipsTotal.toFixed(0);
+    document.getElementById("paperclips").innerHTML = paperclips.toFixed(0);
+    document.getElementById("paperclips_production").innerHTML = production.toFixed(0);
+    document.getElementById("price_autoclicker").innerHTML = price_autoclicker.toFixed(2);
+    document.getElementById("auto-clickers-capacity").innerHTML = rendement_autoclicker.toFixed(0);
+    document.getElementById("price_marketing").innerHTML = price_marketing.toFixed(2);
+    document.getElementById("marketing_capacity").innerHTML = marketing.toFixed(0);
+
+    calculate_interval_selling();
+    calculate_price_speed_selling();
+}
+
+// Reset game
+function resetGame() {
+    if (confirm("Are you sure you want to restart the game?")) {
+        localStorage.removeItem("paperclipsSave");
+        location.reload();
+    }
+}
+
 setInterval(call_1000, 1000);
+setInterval(saveGame, 5000);

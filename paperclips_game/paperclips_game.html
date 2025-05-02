@@ -37,21 +37,21 @@
         <section class="actions">
             <button class="btn-large" onclick="add_paperclip()">Create paperclip</button>
             <div class="production-info">
-                <p>Production : <span id="paperclips_production">0</span> /s</p>
-                <p>Price : <span id="price"></span> $</p>
+                <p>Production : <span id="paperclips_production">0</span>/s</p>
+                <p>Price : <span id="price"></span>$</p>
                 <div class="price-controls">
                     <button onmousedown="holdButton(increase_price)" onmouseup="releaseButton()"
                         onmouseleave="releaseButton()">Increase</button>
                     <button onmousedown="holdButton(decrease_price)" onmouseup="releaseButton()"
                         onmouseleave="releaseButton()">Decrease</button>
                 </div>
-                <p>Sell rate : <span id="paperclip_selling">0</span> /s</p>
-                <p>Income : <span id="income">0</span> $/s</p>
+                <p>Sell rate : <span id="paperclip_selling">0</span>/s</p>
+                <p>Income : <span id="income">0</span>$/s</p>
             </div>
         </section>
 
         <section class="upgrades">
-            <h3>Auto-clickers production : <span id="auto-clickers-capacity">0</span> /s</h3>
+            <h3>Auto-clickers production : <span id="auto-clickers-capacity">0</span>/s</h3>
             <h3>Marketing capacity : <span id="marketing_capacity">0</span></h3>
         </section>
 
@@ -60,15 +60,20 @@
             <div class="market-item">
                 <h3 style="margin-left: 1%;">Auto-clickers</h3>
                 <button onclick="buy_autoclicker()">
-                    <span id="price_autoclicker">1</span> $
+                    <span id="price_autoclicker">1</span>$
                 </button>
             </div>
             <div class="market-item" style="margin-top: 0%;">
                 <h3 style="margin-left: 1%;">Marketing</h3>
                 <button onclick="buy_marketing()">
-                    <span id="price_marketing">5</span> $
+                    <span id="price_marketing">5</span>$
                 </button>
             </div>
+        </section>
+
+        <section class="controls" style="text-align: center">
+            <button class="btn-large" onclick="saveGame()">Save</button>
+            <button class="btn-large" onclick="resetGame()" style="margin-left: 20px;">Restart</button>
         </section>
     </main>
 </body>
