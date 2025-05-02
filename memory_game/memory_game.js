@@ -7,10 +7,9 @@ function takeValues() {
 }
 
 function beginGame() {
+    takeValues();
     document.getElementById("myCanvas").style.visibility = "visible";
-    document.getElementById("cols").style.visibility = "hidden";
-    document.getElementById("rows").style.visibility = "hidden";
-    document.getElementById("buttonChoice").style.visibility = "hidden";
+    document.getElementById("startGame").remove();
 
     // Canvas
     const canvas = document.getElementById("myCanvas");
@@ -35,7 +34,7 @@ function beginGame() {
     let imagesFinished = [];
     let flippedCards = [];
 
-    // CardSize
+    // CardSize+
     let cardSize;
     if (innerHeight / rows > innerWidth / cols) {
         cardSize = innerWidth / cols - innerWidth / cols * 0.2;
@@ -152,9 +151,29 @@ function beginGame() {
 
         cards.forEach(card => {
             if (card.isClicked(mouseX, mouseY)) {
-                card.flip();
+                if (!card.isFlipped && flippedCards.length < 2) {
+                    let shrink = true;
+        
+                    const flipAnimation = setInterval(() => {
+                        if (shrink) {
+                            card.width -= cardSize / 10;
+                            card.x += cardSize / 20;
+                            if (card.width <= 0) {
+                                card.flip();
+                                shrink = false;
+                            }
+                        } else {
+                            card.width += cardSize / 10;
+                            card.x -= cardSize / 20;
+                            if (card.width >= cardSize) {
+                                card.width = cardSize;
+                                clearInterval(flipAnimation);
+                            }
+                        }
+                    }, 15);
+                }
             }
-        });
+        });               
     }
 
     // Fin du jeu

@@ -39,7 +39,7 @@ function add_paperclip() {
 function calculate_production() {
     production = (paperclipsTotal - paperclipsProduce);
     paperclipsProduce = paperclipsTotal;
-    document.getElementById("paperclips_production").innerHTML = production.toString();
+    document.getElementById("paperclips_production").innerHTML = production.toFixed(0).toString();
 }
 
 // Price
@@ -124,7 +124,7 @@ function buy_autoclicker() {
         price_autoclicker = Math.round(price_autoclicker * 1.5 * 100) / 100;
 
         if (rendement_autoclicker != 0) {
-            rendement_autoclicker *= 2;
+            rendement_autoclicker *= 1.25;
         } else {
             rendement_autoclicker = 1;
         }
@@ -140,7 +140,7 @@ function buy_marketing() {
         money -= price_marketing;
         price_marketing = Math.round(price_marketing * 1.5 * 100) / 100;
 
-        marketing *= 2;
+        marketing *= 1.25;
 
         document.getElementById("price_marketing").innerHTML = price_marketing.toFixed(2).toString();
         document.getElementById("marketing_capacity").innerHTML = marketing.toFixed(0).toString();
