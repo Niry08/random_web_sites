@@ -92,7 +92,7 @@ function sell_paperclip() {
 }
 
 function calculate_interval_selling() {
-    interval_selling = paperclipPrice * 100 / marketing; // Attention 5000 est non 1000 (pour flexibiliser la vitesse de vente)
+    interval_selling = paperclipPrice*paperclipPrice * 100 / marketing;
 
     if (interval_selling < 4) {
         quantity = 4 / interval_selling;
