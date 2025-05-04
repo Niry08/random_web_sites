@@ -53,23 +53,48 @@
         </section>
 
         <section class="upgrades">
-            <h3>Auto-clickers production : <span id="auto-clickers-capacity">0</span>/s</h3>
-            <h3>Marketing capacity : <span id="marketing_capacity">0</span></h3>
+            <div style="display: flex; align-items: left; justify-content: left;">
+                <div style="flex: 1; text-align: center;">
+                    <h3>Auto-clickers production : <span id="auto-clickers-capacity">0</span>/s</h3>
+                    <h3>Word of mouth capacity : <span id="wordOfMouth_capacity">0</span></h3>
+                </div>
+                <div style="width: 2px; background-color: black; height: 100%; margin: 0 10px;"></div>
+                <div style="flex: 1; text-align: center;">
+                    <h3>Marketing capacity : <span id="marketing">0</span></h3>
+                    <h3>Shops open : <span id="shops">0</span></h3>
+                </div>
+            </div>
         </section>
 
         <section class="market">
-            <h1>Market</h1>
-            <div class="market-item">
-                <h3 style="margin-left: 1%;">Auto-clickers</h3>
-                <button onclick="buy_autoclicker()">
-                    <span id="price_autoclicker">1</span>$
-                </button>
+            <div>
+                <h1>Market</h1>
+                <div class="market-item">
+                    <h3 style="margin-left: 1%;">Auto-clickers</h3>
+                    <button onclick="buy_autoclicker()">
+                        <span id="price_autoclicker">1</span>$
+                    </button>
+                </div>
+                <div class="market-item" style="margin-top: 0%;">
+                    <h3 style="margin-left: 1%;">Word of mouth</h3>
+                    <button onclick="buy_wordOfMouth()">
+                        <span id="price_wordOfMouth">5</span>$
+                    </button>
+                </div>
             </div>
-            <div class="market-item" style="margin-top: 0%;">
-                <h3 style="margin-left: 1%;">Marketing</h3>
-                <button onclick="buy_marketing()">
-                    <span id="price_marketing">5</span>$
-                </button>
+            <div>
+                <div class="market-item">
+                    <h3 style="margin-left: 1%;">Marketing</h3>
+                    <button onclick="buy_marketing()">
+                        <span id="price_marketing">200</span>$
+                    </button>
+                </div>
+                <div class="market-item" style="margin-top: 0%;">
+                    <h3 style="margin-left: 1%;">Shop</h3>
+                    <button onclick="buy_shop()">
+                        <span id="price_shop">1'500</span>$
+                    </button>
+                </div>
             </div>
         </section>
 

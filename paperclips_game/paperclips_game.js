@@ -4,7 +4,7 @@ var paperclipsTotal = 0;
 var paperclipsProduce = 0;
 
 var production = 0;
-var paperclipPrice = 0.2;
+var paperclipPrice = 1;
 
 var interval_selling = 0;
 var speed_selling = 0;
@@ -17,8 +17,14 @@ var money = 0;
 var price_autoclicker = 1;
 var rendement_autoclicker = 0;
 
+var wordOfMouth = 1;
+var price_wordOfMouth = 5;
+
 var marketing = 1;
-var price_marketing = 5;
+var price_marketing = 200;
+
+var shops = 1;
+var price_shops = 1500;
 
 let intervalId;
 
@@ -92,7 +98,7 @@ function sell_paperclip() {
 }
 
 function calculate_interval_selling() {
-    interval_selling = paperclipPrice*paperclipPrice * 100 / marketing;
+    interval_selling = paperclipPrice*paperclipPrice * 100 / wordOfMouth;
 
     if (interval_selling < 4) {
         quantity = 4 / interval_selling;
@@ -136,18 +142,38 @@ function buy_autoclicker() {
 
 }
 
+function buy_wordOfMouth() {
+    if (money >= price_wordOfMouth) {
+        money -= price_wordOfMouth;
+        price_wordOfMouth = Math.round(price_wordOfMouth * 1.5 * 100) / 100;
+
+        wordOfMouth *= 1.25;
+
+        document.getElementById("price_wordOfMouth").innerHTML = price_wordOfMouth.toFixed(2).toString();
+        document.getElementById("wordOfMouth_capacity").innerHTML = wordOfMouth.toFixed(0).toString();
+    }
+    calculate_interval_selling();
+    calculate_price_speed_selling();
+}
+
+function buy_shops() {
+    if (money >= price_shops) {
+        money -= price_shops;
+        price_shops = Math.round(price_shops * 1.5 * 100) / 100;
+
+        shops *= 1.25;
+
+        document.getElementById("price_shops").innerHTML = price_shops.toFixed(2).toString();
+    }
+}
+
 function buy_marketing() {
     if (money >= price_marketing) {
         money -= price_marketing;
         price_marketing = Math.round(price_marketing * 1.5 * 100) / 100;
-
         marketing *= 1.25;
-
         document.getElementById("price_marketing").innerHTML = price_marketing.toFixed(2).toString();
-        document.getElementById("marketing_capacity").innerHTML = marketing.toFixed(0).toString();
     }
-    calculate_interval_selling();
-    calculate_price_speed_selling();
 }
 
 function rendement_autoclicker_func() {
@@ -156,10 +182,22 @@ function rendement_autoclicker_func() {
     document.getElementById("paperclips_produce").innerHTML = paperclipsTotal.toFixed(0).toString();
 }
 
+function verify_money() {
+    if (money > 200) {
+        document.getElementById("marketing").style.visibility = "visible";
+        document.getElementById("price_marketing").style.visibility = "visible";
+    }
+    if (money > 1500) {
+        document.getElementById("shops").style.visibility = "visible";
+        document.getElementById("price_shops").style.visibility = "visible";
+    }
+}
+
 function call_1000() {
     calculate_production();
     calculate_price_speed_selling();
     rendement_autoclicker_func();
+    verify_money();
 }
 
 // Sauvegarde de la partie
@@ -173,8 +211,8 @@ function saveGame() {
         money,
         price_autoclicker,
         rendement_autoclicker,
-        marketing,
-        price_marketing
+        wordOfMouth,
+        price_wordOfMouth
     };
 
     localStorage.setItem("paperclipsSave", JSON.stringify(gameState));
@@ -194,8 +232,8 @@ function loadGame() {
         money = gameState.money;
         price_autoclicker = gameState.price_autoclicker;
         rendement_autoclicker = gameState.rendement_autoclicker;
-        marketing = gameState.marketing;
-        price_marketing = gameState.price_marketing;
+        wordOfMouth = gameState.wordOfMouth;
+        price_wordOfMouth = gameState.price_wordOfMouth;
 
         updateUI();
     }
@@ -210,8 +248,8 @@ function updateUI() {
     document.getElementById("paperclips_production").innerHTML = production.toFixed(0);
     document.getElementById("price_autoclicker").innerHTML = price_autoclicker.toFixed(2);
     document.getElementById("auto-clickers-capacity").innerHTML = rendement_autoclicker.toFixed(0);
-    document.getElementById("price_marketing").innerHTML = price_marketing.toFixed(2);
-    document.getElementById("marketing_capacity").innerHTML = marketing.toFixed(0);
+    document.getElementById("price_wordOfMouth").innerHTML = price_wordOfMouth.toFixed(2);
+    document.getElementById("wordOfMouth_capacity").innerHTML = wordOfMouth.toFixed(0);
 
     calculate_interval_selling();
     calculate_price_speed_selling();
