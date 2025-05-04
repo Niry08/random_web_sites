@@ -20,7 +20,7 @@ var rendement_autoclicker = 0;
 var wordOfMouth = 1;
 var price_wordOfMouth = 5;
 
-var marketing = 1;
+var marketing = 1.5;
 var price_marketing = 200;
 
 var shops = 1;
@@ -98,7 +98,7 @@ function sell_paperclip() {
 }
 
 function calculate_interval_selling() {
-    interval_selling = paperclipPrice*paperclipPrice * 100 / wordOfMouth;
+    interval_selling = paperclipPrice*paperclipPrice * 100 / (wordOfMouth * shops);
 
     if (interval_selling < 4) {
         quantity = 4 / interval_selling;
@@ -131,7 +131,7 @@ function buy_autoclicker() {
         price_autoclicker = Math.round(price_autoclicker * 1.5 * 100) / 100;
 
         if (rendement_autoclicker != 0) {
-            rendement_autoclicker *= 1.25;
+            rendement_autoclicker *= marketing;
         } else {
             rendement_autoclicker = 1;
         }
@@ -147,32 +147,33 @@ function buy_wordOfMouth() {
         money -= price_wordOfMouth;
         price_wordOfMouth = Math.round(price_wordOfMouth * 1.5 * 100) / 100;
 
-        wordOfMouth *= 1.25;
+        wordOfMouth *= marketing;
 
         document.getElementById("price_wordOfMouth").innerHTML = price_wordOfMouth.toFixed(2).toString();
-        document.getElementById("wordOfMouth_capacity").innerHTML = wordOfMouth.toFixed(0).toString();
+        document.getElementById("wordOfMouth_capacity").innerHTML = wordOfMouth.toFixed(2).toString();
     }
     calculate_interval_selling();
     calculate_price_speed_selling();
-}
-
-function buy_shops() {
-    if (money >= price_shops) {
-        money -= price_shops;
-        price_shops = Math.round(price_shops * 1.5 * 100) / 100;
-
-        shops *= 1.25;
-
-        document.getElementById("price_shops").innerHTML = price_shops.toFixed(2).toString();
-    }
 }
 
 function buy_marketing() {
     if (money >= price_marketing) {
         money -= price_marketing;
         price_marketing = Math.round(price_marketing * 1.5 * 100) / 100;
-        marketing *= 1.25;
+        marketing *= 1.05;
+        document.getElementById("marketing_capacity").innerHTML = marketing.toFixed(2).toString();
         document.getElementById("price_marketing").innerHTML = price_marketing.toFixed(2).toString();
+    }
+}
+
+function buy_shops() {
+    if (money >= price_shops) {
+        money -= price_shops;
+        price_shops = Math.round(price_shops * 5 * 100) / 100;
+
+        shops *= 2;
+
+        document.getElementById("price_shops").innerHTML = price_shops.toFixed(2).toString();
     }
 }
 
