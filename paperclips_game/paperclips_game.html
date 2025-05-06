@@ -2,80 +2,112 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paperclips game</title>
-    <script src="paperclips_game.js"></script>
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="paperclips_game.css">
-
-    <script src="ia.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paperclips Game</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="paperclips_game.css" />
+    <script src="paperclips_game.js" defer></script>
+    <script src="ia.js" defer></script>
 </head>
 
 <body onload="init()">
     <header>
         <h1>
-            <a href="../index.html">Paperclips game</a>
+          <a href="../index.html">Brick Breaker</a>
         </h1>
         <div class="left">
-            <button onclick="window.location.href='../index.html'">
-                <img src="../assets/home.png" alt="Home icon">
-            </button>
+          <button onclick="window.location.href='../index.html'"><img src="../assets/home.png" alt="Home icone"></button>
         </div>
         <div class="right">
-            <button onclick="window.location.href='settings/settings.html'">
-                <img src="../assets/setting.png" alt="Settings icon">
-            </button>
+          <button onclick="window.location.href='settings/settings.html'"><img src="../assets/setting.png"
+              alt="Settings icone"></button>
         </div>
-    </header>
+      </header>
 
-    <main class="container" style="margin-top: 2%;">
+    <main class="container">
         <section class="stats">
-            <h2><span id="paperclips_produce">0</span> Paperclips produce</h2>
+            <h2><span id="paperclips_produce">0</span> Paperclips Produced</h2>
             <h2><span id="paperclips">0</span> Paperclips</h2>
             <h2><span id="money">0</span> $</h2>
         </section>
 
         <section class="actions">
-            <button class="btn-large" onclick="add_paperclip()">Create paperclip</button>
-            <div class="production-info">
-                <p>Production : <span id="paperclips_production">0</span>/s</p>
-                <p>Price : <span id="price"></span>$</p>
-                <div class="price-controls">
-                    <button onmousedown="holdButton(increase_price)" onmouseup="releaseButton()"
-                        onmouseleave="releaseButton()">Increase</button>
-                    <button onmousedown="holdButton(decrease_price)" onmouseup="releaseButton()"
-                        onmouseleave="releaseButton()">Decrease</button>
+            <div class="action-block">
+                <button class="btn-large" onclick="add_paperclip()">Create Paperclip</button>
+                <div class="production-info">
+                    <p>Production: <span id="paperclips_production">0</span>/s</p>
+                    <p>Price: <span id="price">0</span>$</p>
+                    <div class="price-controls">
+                        <button onmousedown="holdButton(increase_price)" onmouseup="releaseButton()"
+                            onmouseleave="releaseButton()">Increase</button>
+                        <button onmousedown="holdButton(decrease_price)" onmouseup="releaseButton()"
+                            onmouseleave="releaseButton()">Decrease</button>
+                    </div>
+                    <p>Sell rate: <span id="paperclip_selling">0</span>/s</p>
+                    <p>Income: <span id="income">0</span>$/s</p>
                 </div>
-                <p>Sell rate : <span id="paperclip_selling">0</span>/s</p>
-                <p>Income : <span id="income">0</span>$/s</p>
+            </div>
+
+            <div class="action-block">
+                <button class="btn-large" onclick="buy_wire()">Buy Wire</button>
+                <p>Price: <span id="price_wire">0</span>$</p>
+                <hr>
+                <p>Wire Quantity: <span id="wire_quantity">0</span></p>
             </div>
         </section>
 
         <section class="upgrades">
-            <h3>Auto-clickers production : <span id="auto-clickers-capacity">0</span>/s</h3>
-            <h3>Marketing capacity : <span id="marketing_capacity">0</span></h3>
+            <div class="upgrade-grid">
+                <div class="upgrade-card">
+                    <h3>Auto-clickers :</h3>
+                    <span id="auto-clickers-capacity" style="padding-left: 10%;">0</span>/s
+                </div>
+                <div class="upgrade-card">
+                    <h3>Word of Mouth :</h3>
+                    <span id="wordOfMouth_capacity" style="padding-left: 10%;">0</span>
+                </div>
+                <div class="upgrade-card">
+                    <h3>Marketing :</h3>
+                    <span id="marketing_capacity" style="padding-left: 10%;">0</span>
+                </div>
+                <div class="upgrade-card">
+                    <h3>Shops Open :</h3>
+                    <span id="shops_open" style="padding-left: 10%;">0</span>
+                </div>
+            </div>
         </section>
+        
+        
 
         <section class="market">
-            <h1>Market</h1>
-            <div class="market-item">
-                <h3 style="margin-left: 1%;">Auto-clickers</h3>
-                <button onclick="buy_autoclicker()">
-                    <span id="price_autoclicker">1</span>$
-                </button>
+            <h2>Market</h2>
+            <div class="market-row">
+                <div class="market-item">
+                    <h3>Auto-clickers</h3>
+                    <button onclick="buy_autoclicker()"><span id="price_autoclicker">1</span>$</button>
+                </div>
+                <div class="market-item">
+                    <h3>Word of Mouth</h3>
+                    <button onclick="buy_wordOfMouth()"><span id="price_wordOfMouth">5</span>$</button>
+                </div>
             </div>
-            <div class="market-item" style="margin-top: 0%;">
-                <h3 style="margin-left: 1%;">Marketing</h3>
-                <button onclick="buy_marketing()">
-                    <span id="price_marketing">5</span>$
-                </button>
+            <div class="market-row">
+                <div class="market-item">
+                    <h3>Marketing</h3>
+                    <button onclick="buy_marketing()"><span id="price_marketing">200</span>$</button>
+                </div>
+                <div class="market-item">
+                    <h3>Shop</h3>
+                    <button onclick="buy_shops()"><span id="price_shop">1500</span>$</button>
+                </div>
             </div>
         </section>
 
-        <section class="controls" style="text-align: center">
+        <!-- Contrôles -->
+        <section class="controls">
             <button class="btn-large" onclick="saveGame()">Save</button>
-            <button class="btn-large" onclick="resetGame()" style="margin-left: 20px;">Restart</button>
+            <button class="btn-large" onclick="resetGame()">Restart</button>
         </section>
     </main>
 </body>
