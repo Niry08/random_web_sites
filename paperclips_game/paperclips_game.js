@@ -20,11 +20,14 @@ var rendement_autoclicker = 0;
 var wordOfMouth = 1;
 var price_wordOfMouth = 5;
 
-var marketing = 1.5;
+var marketing = 1.25;
 var price_marketing = 200;
 
 var shops = 1;
 var price_shops = 1500;
+
+var wire = 100;
+var price_wire = Math.floor(Math.random() * (30 - 10 + 1)) + 10;
 
 let intervalId;
 
@@ -32,15 +35,24 @@ function init() {
     document.getElementById("price").innerHTML = paperclipPrice.toFixed(2).toString();
     document.getElementById("money").innerHTML = money.toFixed(2).toString();
 
+    document.getElementById("marketing_capacity").innerHTML = marketing.toFixed(2).toString();
+    document.getElementById("shops_open").innerHTML = shops.toFixed(0).toString();
+    document.getElementById("wire_quantity").innerHTML = wire.toFixed(0).toString();
+    document.getElementById("price_wire").innerHTML = price_wire.toFixed(2).toString();
+
     loadGame();
     calculate_interval_selling();
 }
 
 function add_paperclip() {
-    paperclips += 1;
-    paperclipsTotal += 1;
-    document.getElementById("paperclips_produce").innerHTML = paperclipsTotal.toFixed(0).toString();
-    document.getElementById("paperclips").innerHTML = paperclips.toFixed(0).toString();
+    if (wire > 0) {
+        paperclips += 1;
+        paperclipsTotal += 1;
+        wire -= 1;
+        document.getElementById("wire_quantity").innerHTML = wire.toFixed(0).toString();
+        document.getElementById("paperclips_produce").innerHTML = paperclipsTotal.toFixed(0).toString();
+        document.getElementById("paperclips").innerHTML = paperclips.toFixed(0).toString();
+    }
 }
 
 function calculate_production() {
@@ -84,7 +96,7 @@ function sell_paperclip() {
         paperclips = 0;
     } else if (quantity > paperclips) {
         quantity = paperclips;
-    } 
+    }
     else {
         paperclips -= 1 * quantity;
         money = Math.round((money + paperclipPrice * quantity) * 100) / 100;
@@ -98,7 +110,7 @@ function sell_paperclip() {
 }
 
 function calculate_interval_selling() {
-    interval_selling = paperclipPrice*paperclipPrice * 100 / (wordOfMouth * shops);
+    interval_selling = paperclipPrice * paperclipPrice * 100 / (wordOfMouth * shops);
 
     if (interval_selling < 4) {
         quantity = 4 / interval_selling;
@@ -173,14 +185,30 @@ function buy_shops() {
 
         shops *= 2;
 
-        document.getElementById("price_shops").innerHTML = price_shops.toFixed(2).toString();
+        document.getElementById("price_shop").innerHTML = price_shops.toFixed(2).toString();
+        document.getElementById("shops_open").innerHTML = shops.toFixed(0).toString();
+    }
+}
+
+function buy_wire() {
+    if (money >= price_wire) {
+        money -= price_wire;
+
+        wire += 100;
+
+        document.getElementById("price_wire").innerHTML = price_wire.toFixed(2).toString();
+        document.getElementById("wire_quantity").innerHTML = wire.toFixed(0).toString();
     }
 }
 
 function rendement_autoclicker_func() {
-    paperclips += rendement_autoclicker;
-    paperclipsTotal += rendement_autoclicker;
-    document.getElementById("paperclips_produce").innerHTML = paperclipsTotal.toFixed(0).toString();
+    if (wire > 0) {
+        paperclips += rendement_autoclicker;
+        paperclipsTotal += rendement_autoclicker;
+        wire -= rendement_autoclicker;
+        document.getElementById("paperclips_produce").innerHTML = paperclipsTotal.toFixed(0).toString();
+        document.getElementById("wire_quantity").innerHTML = wire.toFixed(0).toString();
+    }
 }
 
 function verify_money() {
@@ -199,6 +227,10 @@ function call_1000() {
     calculate_price_speed_selling();
     rendement_autoclicker_func();
     verify_money();
+}
+
+function call_10000() {
+    price_wire = Math.floor(Math.random() * (30 - 10 + 1)) + 10;
 }
 
 // Sauvegarde de la partie
@@ -265,4 +297,5 @@ function resetGame() {
 }
 
 setInterval(call_1000, 1000);
+setInterval(call_10000, 10000);
 setInterval(saveGame, 5000);
