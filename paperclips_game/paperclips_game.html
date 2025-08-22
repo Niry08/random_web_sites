@@ -51,11 +51,15 @@
             </div>
 
             <div class="action-block">
-                <div>
-                    <button class="btn-large" onclick="buy_wire_100()">Buy Wire (100pces)</button>
-                    <button class="btn-large" onclick="buy_wire_1000()">Buy Wire (1000 pces)</button>
-                    <button class="btn-large" onclick="buy_wire_10000()">Buy Wire (10000 pces)</button>
-                    <button class="btn-large" onclick="buy_wire_100000()">Buy Wire (100000 pces)</button>
+                <div style="display: flex; gap: 10px;">
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <button class="btn-large" onclick="buy_wire_100()">Buy Wire (100pces)</button>
+                        <button class="btn-large" onclick="buy_wire_1000()">Buy Wire (1000 pces)</button>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <button class="btn-large" onclick="buy_wire_10000()">Buy Wire (10000 pces)</button>
+                        <button class="btn-large" onclick="buy_wire_100000()">Buy Wire (100000 pces)</button>
+                    </div>
                 </div>
                 <p>Price: <span id="price_wire">0</span>$</p>
                 <hr>
