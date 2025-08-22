@@ -190,11 +190,44 @@ function buy_shops() {
     }
 }
 
-function buy_wire() {
+function buy_wire_100() {
     if (money >= price_wire) {
         money -= price_wire;
 
         wire += 100;
+
+        document.getElementById("price_wire").innerHTML = price_wire.toFixed(2).toString();
+        document.getElementById("wire_quantity").innerHTML = wire.toFixed(0).toString();
+    }
+}
+
+function buy_wire_1000() {
+    if (money >= (price_wire*10)) {
+        money -= (price_wire * 10);
+
+        wire += 1000;
+
+        document.getElementById("price_wire").innerHTML = price_wire.toFixed(2).toString();
+        document.getElementById("wire_quantity").innerHTML = wire.toFixed(0).toString();
+    }
+}
+
+function buy_wire_10000() {
+    if (money >= (price_wire*100)) {
+        money -= (price_wire*100);
+
+        wire += 10000;
+
+        document.getElementById("price_wire").innerHTML = price_wire.toFixed(2).toString();
+        document.getElementById("wire_quantity").innerHTML = wire.toFixed(0).toString();
+    }
+}
+
+function buy_wire_100000() {
+    if (money >= (price_wire*1000)) {
+        money -= (price_wire*1000);
+
+        wire += 100000;
 
         document.getElementById("price_wire").innerHTML = price_wire.toFixed(2).toString();
         document.getElementById("wire_quantity").innerHTML = wire.toFixed(0).toString();

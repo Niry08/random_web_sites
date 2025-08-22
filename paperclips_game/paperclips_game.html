@@ -14,16 +14,17 @@
 <body onload="init()">
     <header>
         <h1>
-          <a href="../index.html">Brick Breaker</a>
+            <a href="../index.html">Brick Breaker</a>
         </h1>
         <div class="left">
-          <button onclick="window.location.href='../index.html'"><img src="../assets/home.png" alt="Home icone"></button>
+            <button onclick="window.location.href='../index.html'"><img src="../assets/home.png"
+                    alt="Home icone"></button>
         </div>
         <div class="right">
-          <button onclick="window.location.href='settings/settings.html'"><img src="../assets/setting.png"
-              alt="Settings icone"></button>
+            <button onclick="window.location.href='settings/settings.html'"><img src="../assets/setting.png"
+                    alt="Settings icone"></button>
         </div>
-      </header>
+    </header>
 
     <main class="container">
         <section class="stats">
@@ -50,7 +51,12 @@
             </div>
 
             <div class="action-block">
-                <button class="btn-large" onclick="buy_wire()">Buy Wire</button>
+                <div>
+                    <button class="btn-large" onclick="buy_wire_100()">Buy Wire (100pces)</button>
+                    <button class="btn-large" onclick="buy_wire_1000()">Buy Wire (1000 pces)</button>
+                    <button class="btn-large" onclick="buy_wire_10000()">Buy Wire (10000 pces)</button>
+                    <button class="btn-large" onclick="buy_wire_100000()">Buy Wire (100000 pces)</button>
+                </div>
                 <p>Price: <span id="price_wire">0</span>$</p>
                 <hr>
                 <p>Wire Quantity: <span id="wire_quantity">0</span></p>
@@ -77,8 +83,8 @@
                 </div>
             </div>
         </section>
-        
-        
+
+
 
         <section class="market">
             <h2>Market</h2>
